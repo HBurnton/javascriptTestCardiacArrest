@@ -8,9 +8,10 @@ var answerList = document.createElement('ol');
 var startButton = document.createElement('button');
 var feedback = document.createElement('p')
 var oneQuestion;
+var timerInterval;
 var askedQuestions = [];
 var answer = [];
-var timeLeft = 0;
+var timeLeft = 30;
 var currentScore = 0;
 
 /*Questions are sourced from Unit 03: JavaScript Technical Interview Questions*/
@@ -112,15 +113,16 @@ main.appendChild(feedback)
 
 function printQuestion(){
 
-    clearScreen();
+    clearScreen();//Clear the screen initially
 
-    //if the question list is empty, display ending score and stop timer
+    //if the question list is empty, end the game
     if (questionList.length == 0){
-        question.textContent = "You have answered every question. Your score is: "+ currentScore;
+        endGame();
     }else{
         //remove a single question object from questionList array, set h2 text content to a question
         oneQuestion = questionList.pop();
         question.textContent = oneQuestion.question;
+        askedQuestions.push(oneQuestion);
 
         //shuffle the multiple choice answers for variation
         oneQuestion.choices = shuffle(oneQuestion.choices)
@@ -139,7 +141,7 @@ function printQuestion(){
 function clearScreen(){
     while(answerList.hasChildNodes()) {
         answerList.removeChild(answerList.firstChild);
-        question.textContent = ''
+        question.textContent = '';
     }
 }
 
@@ -152,12 +154,46 @@ function isRight(event){
     }else{
         feedback.textContent = "Sorry, wrong answer";
     }
-    askedQuestions.push(oneQuestion);
-    console.log(askedQuestions)
     printQuestion();
 }
 
-startButton.addEventListener("click",function(){
-    printQuestion()
+function startTimer() {
+    timerInterval = setInterval(function() {
+      timeLeft--;
+      timer.textContent = "Time Remaining: " + timeLeft;
+  
+      if(timeLeft === 0) {
+        endGame();
+      }
+    }, 1000);
+}
+
+function endGame(){
+    clearInterval(timerInterval);
+    clearScreen();
+    feedback.textContent = '';
+    if (questionList.length == 0){
+        question.textContent = "You have answered every question. Your score is: "+ currentScore;
+    }else{
+        question.textContent = "Time is up! Your score is: " + currentScore;
+    }
+    startButton = document.createElement('button');
+    startButton.textContent = "Play again?"
+    main.appendChild(startButton);
+    startButton.addEventListener('click', function(){
+        timeLeft=30;
+        currentScore = 0;
+        startTimer();
+        questionList = questionList.concat(askedQuestions);
+        askedQuestions = [];
+        printQuestion();
+        startButton.remove();
+    })
+}
+
+
+startButton.addEventListener("click", function(){
+    startTimer();
+    printQuestion();
+    startButton.remove();
 });
-startButton.addEventListener("click",startButton.remove);
