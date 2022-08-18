@@ -1,6 +1,3 @@
-/*pseudocode city*/
-
-
 var body = document.body;
 var header = document.createElement('header');
 var viewHighScore = document.createElement('a');
@@ -11,11 +8,12 @@ var answerList = document.createElement('ol');
 var startButton = document.createElement('button');
 var feedback = document.createElement('p')
 var oneQuestion;
+var timerInterval;
+var askedQuestions = [];
 var answer = [];
-var timeLeft = 0;
+var timeLeft = 30;
 var currentScore = 0;
 
-/*Considering structure for questions*/
 /*Questions are sourced from Unit 03: JavaScript Technical Interview Questions*/
 var questionList = [
     {question: "Inside the HTML document, where do you place your JavaScript code?",
@@ -76,7 +74,6 @@ var questionList = [
 The below shuffle function is taken from this
 https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array\
 }*/
-
 function shuffle(array) {
     var currentIndex = array.length,  randomIndex;
   
@@ -95,7 +92,7 @@ function shuffle(array) {
     return array;
 }
 
-/*shuffle array*/
+/*shuffle questionList array*/
 questionList = shuffle(questionList);
 
 viewHighScore.textContent="Click to View High Scores";
@@ -115,36 +112,88 @@ main.appendChild(feedback)
 
 
 function printQuestion(){
+
+    clearScreen();//Clear the screen initially
+
+    //if the question list is empty, end the game
     if (questionList.length == 0){
-        console.log('hi');
+        endGame();
     }else{
-        while(answerList.hasChildNodes()) {
-            answerList.removeChild(answerList.firstChild);
-        }
+        //remove a single question object from questionList array, set h2 text content to a question
         oneQuestion = questionList.pop();
         question.textContent = oneQuestion.question;
+        askedQuestions.push(oneQuestion);
+
+        //shuffle the multiple choice answers for variation
         oneQuestion.choices = shuffle(oneQuestion.choices)
+
+        //Create n amount of listener answer boxes that will check if the selected answer is correct
         for(let i=0; i < oneQuestion.choices.length; i++){
             answer[i] = document.createElement('li');
             answer[i].textContent = oneQuestion.choices[i];
-            answer[i].addEventListener('click', isRight);//could possibly restructure using event delegation on OL?
+            answer[i].addEventListener('click', isRight);
             answerList.appendChild(answer[i]); 
         }
     } 
 }
 
-function isRight(){
-    if(oneQuestion.answer == this.textContent){
-        console.log('yes');
+//While the OL Answer List Has Children, remove them, this clears all previous entries and sets question h2 to blank string
+function clearScreen(){
+    while(answerList.hasChildNodes()) {
+        answerList.removeChild(answerList.firstChild);
+        question.textContent = '';
+    }
+}
+
+function isRight(event){
+    //check to see if the selected target of click's text content is the same as the text content
+    //stored in oneQuestion object's answer.
+    if(oneQuestion.answer == event.target.textContent){
         currentScore++;
-        feedback.textContent = "Yes! That is correct!"
+        feedback.textContent = "Yes! That is correct!";
     }else{
-        console.log('no');
-        feedback.textContent = "Sorry, wrong answer"
+        feedback.textContent = "Sorry, wrong answer";
     }
     printQuestion();
 }
 
+function startTimer() {
+    timerInterval = setInterval(function() {
+      timeLeft--;
+      timer.textContent = "Time Remaining: " + timeLeft;
+  
+      if(timeLeft === 0) {
+        endGame();
+      }
+    }, 1000);
+}
 
-startButton.addEventListener("click",printQuestion);
-startButton.addEventListener("click",startButton.remove);
+function endGame(){
+    clearInterval(timerInterval);
+    clearScreen();
+    feedback.textContent = '';
+    if (questionList.length == 0){
+        question.textContent = "You have answered every question. Your score is: "+ currentScore;
+    }else{
+        question.textContent = "Time is up! Your score is: " + currentScore;
+    }
+    startButton = document.createElement('button');
+    startButton.textContent = "Play again?"
+    main.appendChild(startButton);
+    startButton.addEventListener('click', function(){
+        timeLeft=30;
+        currentScore = 0;
+        startTimer();
+        questionList = questionList.concat(askedQuestions);
+        askedQuestions = [];
+        printQuestion();
+        startButton.remove();
+    })
+}
+
+
+startButton.addEventListener("click", function(){
+    startTimer();
+    printQuestion();
+    startButton.remove();
+});
