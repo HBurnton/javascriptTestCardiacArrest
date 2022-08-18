@@ -5,8 +5,9 @@ var header = document.createElement('header');
 var viewHighScore = document.createElement('a');
 var timer = document.createElement('p');
 var main = document.createElement('main');
-var question = document.createElement('h2');
+var question = document.createElement('h1');
 var answerList = document.createElement('ol');
+var startButton = document.createElement('button');
 var answer = [];
 var timeLeft = 0;
 
@@ -91,24 +92,29 @@ questionList = shuffle(questionList);
 
 viewHighScore.textContent="Click to View High Scores";
 timer.textContent="Time Remaining: " + timeLeft;
-question.textContent = "This is your first question";
+question.textContent = "Welcome to Javascript Quiz! Please click Start Now! to get going. You have 30 seconds once the timer starts.";
 viewHighScore.setAttribute("href", "#");
+startButton.textContent = "Start Now!"
 
 body.appendChild(header);
 header.appendChild(viewHighScore);
 header.appendChild(timer);
 body.appendChild(main);
 main.appendChild(question);
+main.appendChild(startButton);
 main.appendChild(answerList);
 
 
-function printQuestion(array){
-    if (array.length == 0){
+function printQuestion(){
+    if (questionList.length == 0){
         console.log('hi');
     }else{
-        var oneQuestion = array.pop();
+        while(answerList.hasChildNodes()) {
+            answerList.removeChild(answerList.firstChild);
+        }
+        var oneQuestion = questionList.pop();
         question.textContent = oneQuestion.question;
-        oneQuestion.choice = shuffle(oneQuestion.choices)
+        oneQuestion.choices = shuffle(oneQuestion.choices)
         for(let i=0; i < oneQuestion.choices.length; i++){
             answer[i] = document.createElement('li');
             answer[i].textContent = oneQuestion.choices[i];
@@ -117,4 +123,6 @@ function printQuestion(array){
     } 
 }
 
-printQuestion(questionList)
+
+startButton.addEventListener("click", printQuestion);
+startButton.addEventListener("click", startButton.remove);
