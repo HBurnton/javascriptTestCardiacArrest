@@ -1,5 +1,6 @@
 /*pseudocode city*/
 
+
 var body = document.body;
 var header = document.createElement('header');
 var viewHighScore = document.createElement('a');
@@ -8,8 +9,11 @@ var main = document.createElement('main');
 var question = document.createElement('h1');
 var answerList = document.createElement('ol');
 var startButton = document.createElement('button');
+var feedback = document.createElement('p')
+var oneQuestion;
 var answer = [];
 var timeLeft = 0;
+var currentScore = 0;
 
 /*Considering structure for questions*/
 /*Questions are sourced from Unit 03: JavaScript Technical Interview Questions*/
@@ -62,6 +66,10 @@ var questionList = [
                "Period notation, Square bracket notation",
                "Equal notation, Abstract notation"],
      answer: "Dot notation, Bracket notation"},
+
+     {question: "Javascript is a good language",
+      choices: ["True", "False"],
+      answer: "True",},
 ]
 
 /*
@@ -103,6 +111,7 @@ body.appendChild(main);
 main.appendChild(question);
 main.appendChild(startButton);
 main.appendChild(answerList);
+main.appendChild(feedback)
 
 
 function printQuestion(){
@@ -112,17 +121,30 @@ function printQuestion(){
         while(answerList.hasChildNodes()) {
             answerList.removeChild(answerList.firstChild);
         }
-        var oneQuestion = questionList.pop();
+        oneQuestion = questionList.pop();
         question.textContent = oneQuestion.question;
         oneQuestion.choices = shuffle(oneQuestion.choices)
         for(let i=0; i < oneQuestion.choices.length; i++){
             answer[i] = document.createElement('li');
             answer[i].textContent = oneQuestion.choices[i];
-            answerList.appendChild(answer[i]);
+            answer[i].addEventListener('click', isRight);//could possibly restructure using event delegation on OL?
+            answerList.appendChild(answer[i]); 
         }
     } 
 }
 
+function isRight(){
+    if(oneQuestion.answer == this.textContent){
+        console.log('yes');
+        currentScore++;
+        feedback.textContent = "Yes! That is correct!"
+    }else{
+        console.log('no');
+        feedback.textContent = "Sorry, wrong answer"
+    }
+    printQuestion();
+}
 
-startButton.addEventListener("click", printQuestion);
-startButton.addEventListener("click", startButton.remove);
+
+startButton.addEventListener("click",printQuestion);
+startButton.addEventListener("click",startButton.remove);

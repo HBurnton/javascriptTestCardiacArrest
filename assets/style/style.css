@@ -2,7 +2,6 @@
     --buttonColor: #ef233c;
     --headingColor: #2b2d42;
     --buttonHover: #8d99ae;
-
 }
 
 body{
@@ -19,17 +18,19 @@ header{
 h1{
     text-align: center;
     color: var(--headingColor);
+    height: 2rem;
 }
 
 li{
     background-color: var(--buttonColor);
     margin: 10px;
-    padding: 10px;
+    padding: 10px 15px;
     border-radius: 20px;
     list-style: number inside;
     color: white;
     font-size: 16px;
     font-weight: 600;
+    min-width: 200px;
 }
 
 li:hover{
@@ -43,8 +44,8 @@ ol{
     flex-direction: column;
     flex-wrap: wrap;
     align-content: flex-start;
-    padding-left: 20%;
     align-items: stretch;
+    padding-left: 0;
 }
 
 button{
@@ -52,11 +53,13 @@ button{
     text-align: center;
     padding: 10px 10px;
     border-radius: 40px;
-    margin: 0 auto;
+    margin: 4em auto;
 }
 
 main{
     display: flex;
     align-content: center;
     flex-direction: column;
+    max-width: 800px;
+    margin: 0 auto;
 }
