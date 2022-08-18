@@ -11,7 +11,7 @@ var oneQuestion;
 var timerInterval;
 var askedQuestions = [];
 var answer = [];
-var timeLeft = 30;
+var timeLeft = 60;
 var currentScore = 0;
 
 /*Questions are sourced from Unit 03: JavaScript Technical Interview Questions*/
@@ -153,6 +153,7 @@ function isRight(event){
         feedback.textContent = "Yes! That is correct!";
     }else{
         feedback.textContent = "Sorry, wrong answer";
+        timeLeft -= 10;
     }
     printQuestion();
 }
@@ -162,7 +163,7 @@ function startTimer() {
       timeLeft--;
       timer.textContent = "Time Remaining: " + timeLeft;
   
-      if(timeLeft === 0) {
+      if(timeLeft <= 0) {
         endGame();
       }
     }, 1000);
@@ -181,7 +182,7 @@ function endGame(){
     startButton.textContent = "Play again?"
     main.appendChild(startButton);
     startButton.addEventListener('click', function(){
-        timeLeft=30;
+        timeLeft=60;
         currentScore = 0;
         startTimer();
         questionList = questionList.concat(askedQuestions);
