@@ -105,6 +105,7 @@ body.appendChild(header);
 header.appendChild(viewHighScore);
 header.appendChild(timer);
 body.appendChild(main);
+main.setAttribute('class', '');
 main.appendChild(question);
 main.appendChild(startButton);
 main.appendChild(answerList);
@@ -199,3 +200,12 @@ startButton.addEventListener("click", function(){
     printQuestion();
     startButton.remove();
 });
+
+viewHighScore.addEventListener('click', function(){
+    if (main.getAttribute("class")=='hidden'){
+        main.removeAttribute("class");
+    }else{
+        main.setAttribute('class', 'hidden');
+    }
+
+})
