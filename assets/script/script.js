@@ -185,6 +185,7 @@ function endGame(){
         currentScore = 0;
         startTimer();
         questionList = questionList.concat(askedQuestions);
+        questionList = shuffle(questionList);
         askedQuestions = [];
         printQuestion();
         startButton.remove();
