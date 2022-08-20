@@ -13,6 +13,7 @@ var askedQuestions = [];
 var answer = [];
 var timeLeft = 60;
 var currentScore = 0;
+var userScores = []
 
 /*Questions are sourced from Unit 03: JavaScript Technical Interview Questions*/
 var questionList = [
@@ -98,7 +99,7 @@ questionList = shuffle(questionList);
 viewHighScore.textContent="Click to View High Scores";
 timer.textContent="Time Remaining: " + timeLeft;
 question.textContent = "Welcome to Javascript Quiz! Please click Start Now! to get going. You have 30 seconds once the timer starts.";
-viewHighScore.setAttribute("href", "#");
+viewHighScore.setAttribute("href", "./scores.html");
 startButton.textContent = "Start Now!"
 
 body.appendChild(header);
@@ -155,6 +156,9 @@ function isRight(event){
     }else{
         feedback.textContent = "Sorry, wrong answer";
         timeLeft -= 10;
+        if(timeLeft < 0){
+            timeLeft = 0;
+        }
     }
     printQuestion();
 }
@@ -179,18 +183,26 @@ function endGame(){
     }else{
         question.textContent = "Time is up! Your score is: " + currentScore;
     }
-    startButton = document.createElement('button');
-    startButton.textContent = "Play again?"
-    main.appendChild(startButton);
-    startButton.addEventListener('click', function(){
-        timeLeft=60;
-        currentScore = 0;
-        startTimer();
-        questionList = questionList.concat(askedQuestions);
-        questionList = shuffle(questionList);
-        askedQuestions = [];
-        printQuestion();
-        startButton.remove();
+    logScore = document.createElement('button');
+    userName = document.createElement('input');
+    userName.setAttribute('type', 'text');
+    feedback.appendChild(userName);
+    logScore.textContent = "Log My Score";
+    main.appendChild(logScore);
+    logScore.addEventListener('click', function(){
+        var user = {
+            name: userName.value.trim(),
+            score: currentScore,
+        }
+
+        var storedUsers = JSON.parse(localStorage.getItem("userScores"))
+        if (storedUsers !== null) {
+            userScores = storedUsers;
+            console.log(userScores)
+        }
+        userScores.push(user);
+        localStorage.setItem("userScores", JSON.stringify(userScores));
+        window.location.href = 'scores.html';
     })
 }
 
@@ -201,11 +213,3 @@ startButton.addEventListener("click", function(){
     startButton.remove();
 });
 
-viewHighScore.addEventListener('click', function(){
-    if (main.getAttribute("class")=='hidden'){
-        main.removeAttribute("class");
-    }else{
-        main.setAttribute('class', 'hidden');
-    }
-
-})
