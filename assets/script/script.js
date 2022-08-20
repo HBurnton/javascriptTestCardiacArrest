@@ -98,7 +98,7 @@ questionList = shuffle(questionList);
 
 viewHighScore.textContent="Click to View High Scores";
 timer.textContent="Time Remaining: " + timeLeft;
-question.textContent = "Welcome to Javascript Quiz! Please click Start Now! to get going. You have 30 seconds once the timer starts.";
+question.textContent = "Welcome to Javascript Quiz! Please click Start Now! to get going. You have 60 seconds once the timer starts.";
 viewHighScore.setAttribute("href", "./scores.html");
 startButton.textContent = "Start Now!"
 
