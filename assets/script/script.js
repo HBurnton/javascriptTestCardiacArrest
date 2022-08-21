@@ -156,9 +156,6 @@ function isRight(event){
     }else{
         feedback.textContent = "Sorry, wrong answer";
         timeLeft -= 10;
-        if(timeLeft < 0){
-            timeLeft = 0;
-        }
     }
     printQuestion();
 }
@@ -166,6 +163,9 @@ function isRight(event){
 function startTimer() {
     timerInterval = setInterval(function() {
       timeLeft--;
+      if(timeLeft < 0){
+        timeLeft = 0;
+    }
       timer.textContent = "Time Remaining: " + timeLeft;
   
       if(timeLeft <= 0) {
