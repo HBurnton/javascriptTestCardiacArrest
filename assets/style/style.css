@@ -1,5 +1,5 @@
 :root{
-    --buttonColor: #ef233c;
+    --buttonColor: #ef233c;/*Decided not to use this color because eugh*/
     --headingColor: #2b2d42;
     --buttonHover: #8d99ae;
 }
@@ -22,7 +22,7 @@ h1{
 }
 
 li{
-    background-color: var(--buttonColor);
+    background-color: var(--headingColor);
     margin: 10px;
     padding: 10px 15px;
     border-radius: 20px;
@@ -36,7 +36,6 @@ li{
 li:hover{
     background-color: var(--buttonHover);
     cursor: pointer;
-    text-decoration: underline;
 }
 
 ol{
@@ -56,6 +55,10 @@ button{
     margin: 4em auto;
 }
 
+button:hover{
+    cursor: pointer;
+}
+
 main{
     display: flex;
     align-content: center;
@@ -67,6 +70,18 @@ main{
 p{
     display: flex;
     justify-content: center;
+}
+
+a{
+    text-decoration: none;
+    background-color: var(--headingColor);
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+a:hover{
+    text-decoration: underline;
 }
 
 /*Display for HS page. Just want to use one style sheet */

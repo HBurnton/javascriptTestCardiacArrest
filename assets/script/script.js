@@ -159,10 +159,13 @@ function isRight(event){
 
 function startTimer() {
     timerInterval = setInterval(function() {
-      timeLeft--;
-      if(timeLeft < 0){
+        timeLeft--;
+        if(timeLeft < 0){ //preventing possible negative number as a result of time penalty
         timeLeft = 0;
-    }
+        }
+        if(timeLeft<10){
+            timer.setAttribute('style', 'color:red;')//Adds emergency red styling to show time running out
+        }
       timer.textContent = "Time Remaining: " + timeLeft;
   
       if(timeLeft <= 0) {
