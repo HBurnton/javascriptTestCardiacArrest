@@ -64,10 +64,33 @@ main{
     margin: 0 auto;
 }
 
+p{
+    display: flex;
+    justify-content: center;
+}
+
+/*Display for HS page. Just want to use one style sheet */
+
 #hsTable{
     display: flex;
     flex-direction: column;
     align-content: space-between;
     justify-content: space-between;
     align-items: center;
+}
+
+#hsTable li{
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--headingColor);
+}
+
+#hsTable li:hover{
+    text-decoration: none;
+    cursor: default;
+}
+
+#hsTable ul{
+    margin-left: 0px;
+    padding-left: 0px;
 }

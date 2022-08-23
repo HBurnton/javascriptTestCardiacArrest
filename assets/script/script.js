@@ -196,6 +196,7 @@ function endGame(){
     //Create input text field for user to enter name
     userName = document.createElement('input');
     userName.setAttribute('type', 'text');
+    userName.setAttribute('placeholder', 'Enter Your Name Here')
     feedback.appendChild(userName);
 
     //Create button for user to submit name
@@ -206,9 +207,15 @@ function endGame(){
     //Add event listener to logScore button that receives username, checks for stored
     //users and adds or creates JSON string.
     logScore.addEventListener('click', function(){
+
         var user = {
-            name: userName.value.trim(),
+            name: "Anonymous",
             score: currentScore,
+        }
+
+        newname = userName.value.trim();
+        if(newname){
+            user.name = newname;
         }
 
         var storedUsers = JSON.parse(localStorage.getItem("userScores"))
